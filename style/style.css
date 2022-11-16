@@ -1,0 +1,463 @@
+/*
+Desarrollado por Digital House Schools para su uso exlusivo en el marco de cursos del Digital Skills Diploma y Plataforma Playground (by Digital House).
+https://www.digitalhouse.com/ar/productos/escuelas
+*/
+:root {
+  --amarillo_fuerte: #ebb61a;
+  --verde_oscuro: #007a4c;
+  --azul:#007a4c;
+  --verde_claro: #00a365;
+  --gris_oscuro: #263238;
+  --gris_claro: grey;
+  --negro: black;
+  --negro_transparente: rgba(9, 16, 8, 0.85);
+  --blanco: white;
+  /* --ladrillo: #ff7059; */
+  --ladrillo: #cc5a47;
+  --ladrillo_transparente: rgba(204, 90, 71,.8);
+  --verde_claro_transparente: rgba(0, 163, 101,.8);
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* ESTRUCTURA GENERAL PAGINA */
+.dhs-body{
+  background-color: var(--negro);
+  color: var(--blanco);
+}
+
+.dhs-body h4{
+  font-size: 16px;
+  text-align: center;
+}
+
+.dhs-panelSuperior{
+    display: grid;
+    grid-template-columns: 1fr 2fr 2fr;
+    height: 100vh;
+}
+
+#dhs-wrapper-lista{
+  padding: 10px;
+}
+
+#dhs-wrapper-lista2{
+  padding: 10px;
+  background-color: var(--gris_oscuro);
+  position:relative; /*para el tachito*/
+}
+
+#dhs-wrapper-lista2 #dhs-lista2{
+  width:220px;
+  min-height: 60vh;
+  max-height: 70vh;
+  overflow-y: auto;
+  margin: 10px auto;
+  padding: 5px;
+  padding-bottom: 200px;
+  background-color: var(--blanco);
+}
+
+/* BOTONES ESPECIALES */
+
+#dhs-erase{
+  font-size:23px;
+  background-color: var(--negro);
+  /* color:var(--gris_claro); */
+  color: var(--ladrillo);
+  position:absolute;
+  bottom:2vh;
+  left:10%;
+  width: 80%;
+  height: 12vh;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+}
+
+#dhs-erase i:hover{
+  font-size:40px;
+}
+
+#dhs-erase li{
+  display: none; /*Importante elementos eliminados*/
+}
+
+#dhs-erase i:disabled{
+  cursor: wait !important;
+}
+
+#dhs-button{
+  background-color: var(--verde_oscuro);
+  color:var(--blanco);
+  border-radius: 5px;
+  margin: 20px auto;
+  font-size: 20px;
+  padding: 14px 18px;
+  display: grid;
+  grid-template-columns: 120px 20px;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+#dhs-button:active{
+  border: 1px solid var(--amarillo_fuerte);
+}
+
+#dhs-button:disabled{
+  border: 1px solid var(--ladrillo);
+  background-color: var(--gris_oscuro);
+  font-style: italic;
+  transform: scale(1.1);
+  cursor: wait !important;
+}
+
+#dhs-button:hover{
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+#dhs-button img{
+  display: block;
+  width:100%;
+  height: 80%;
+}
+
+/* BLOQUES */
+
+.dhs-lista-bloques li{
+  list-style: none;
+  border:1px solid var(--gris_claro);
+  background-color: var(--amarillo_fuerte);
+  color: var(--blanco);
+  width:160px;
+  text-align: center;
+  font-size: 15px;
+  border-radius: 5px;
+  cursor: grab;
+  margin: 10px auto;
+  display: grid;
+  grid-template-columns: 30px auto;
+  align-items: center;
+  padding:3px;
+}
+
+.dhs-lista-bloques li img{
+  width: 100%;
+}
+
+#dhs-lista2 li{
+  margin: 0 auto;
+}
+
+#dhs-wrapper-lista2 #dhs-lista2 li.dhs-running-block-incorrect{
+  background-color: var(--ladrillo) !important;
+  border: 2px solid var(--amarillo_fuerte) !important;
+}
+#dhs-wrapper-lista2 #dhs-lista2 li.dhs-running-block-correct{
+  background-color: var(--azul) !important;
+  border: 2px solid var(--amarillo_fuerte) !important;
+}
+#dhs-wrapper-lista2 #dhs-lista2 li.dhs-running-block-past{
+  background-color: var(--verde_claro) !important;
+}
+
+/* SORTABLE */
+
+.sortable-chosen{
+  box-shadow: 0 0 10px 5px var(--);
+  animation: chauDespacito 3s ease-out;
+}
+.sortable-drag{
+  opacity: 1;
+  box-shadow: 0 0 10px 5px var(--gris_claro);
+} 
+.sortable-ghost{
+  visibility: hidden;
+}
+
+
+/* JUEGO */
+
+#panelJuego{
+  padding:10px;
+}
+
+/*-----Laberinto-------*/
+.personaje {
+  text-align: center;
+  position: absolute !important;
+  /* background-color: #3268c0; */
+  z-index: 2;
+}
+#elemento-escenario{
+  position: relative;
+  margin: 20px auto;
+  z-index: 1;
+}
+.casillero{
+  float: left;
+  border-width: 1px;
+  border-style: solid;
+  background-size: cover;
+}
+
+/* .path{
+  background-image: url("../pages/lupe_commons/img/pasto.png");
+}
+.wall{
+  background-image: url("../pages/lupe_commons/img/arboles_pasto.png");
+
+} */
+
+  
+/*TOOLTIPS JUEGO*/
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 140px;
+  font-family: monospace;
+  background-color: var(--gris_claro);
+  color: var(--blanco);
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 5;
+  top: -2px;
+  right: 110%;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  margin-top: -10px;
+  border-width: 7px;
+  border-style: solid;
+  border-color: transparent transparent transparent var(--gris_claro);
+}
+
+.tooltipVisible .tooltiptext {
+  visibility: visible;
+}
+  
+/* PANEL MODAL JUEGO */
+
+div.dhs-modal-pannel{
+  position: absolute;
+  overflow: hidden;
+  top:0%;
+  left:0%;
+  width: 100%;
+  height: 100%;
+  background: var(--verde_claro_transparente);
+  border: 1px solid var(--negro);
+  z-index: 20;
+  text-align: center;
+  transition: all .35s;
+  font-size: 25px;
+  border: 3px solid var(--amarillo_fuerte);
+  opacity: 98%;
+}
+div.dhs-modal-pannel-hidden {
+  visibility: hidden;
+  opacity: 20%;
+  top:50%;
+  left:50%;
+  width: 0%;
+  height: 0%;
+  font-size: 0px;
+}
+
+div.dhs-modal-pannel p.dhs-modal-pannel-title{
+  padding: 5%;
+  background: var(--negro_transparente);
+  color: var(--blanco);
+  font-size: 100%;
+  font-weight: bold;
+}
+
+div.dhs-modal-pannel img.dhs-modal-pannel-image{
+  width: 40%;
+  height: 40%;
+  margin: 5%;
+  border-radius: 20px;
+}
+
+div.dhs-modal-pannel p.dhs-modal-pannel-main-text{
+  font-weight: bold;
+  font-size: 80%;
+}
+
+
+/*SCROLLBAR*/
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+  margin:2px;
+  padding: 2px;
+  border:none;
+}
+/* Track */
+::-webkit-scrollbar-track {
+  margin:1px;
+  border:none;
+  background: var(--blanco);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--gris_claro);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+
+/* FOOTER */
+#logodhs{
+  width: 180px;
+  position: absolute;
+  bottom: 10px;
+  left: 5px;
+}
+#dhs-footer p{
+  color: var(--gris_claro);
+  position: absolute;
+  bottom: 10px;
+  width: 300px;
+  font-size: 12px;
+  text-align: left;
+}
+#dhs-footer p span{
+  color: var(--amarillo_fuerte);
+}
+
+#dhs-footer a{
+  color: var(--amarillo_fuerte);
+
+}
+#dhs-footer a:visited{
+  color: var(--ladrillo);
+}
+
+span#dhs-button-open-ref{
+  color: var(--amarillo_fuerte);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+
+/* REFERENCIA ICONOS */
+#referencias-iconos{
+  display: none;
+  color: white;
+  background: black; 
+  position: absolute;
+  padding: 10px;
+  top: 0;
+  width: 100%;
+  min-height: 100vh;
+  z-index: 10;
+}
+#referencias-iconos header{
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  align-items: center;
+}
+#referencias-iconos header>h5{
+  font-size: 30px;
+}
+#referencias-iconos header>img{
+  height: 70px;
+  align-self: right;
+}
+
+#referencias-iconos main{
+  background-color: var(--gris_oscuro);
+  padding: 20px
+}
+
+#referencias-iconos main>p{
+  margin-bottom: 10px;
+}
+#referencias-iconos main>p a{
+  color: var(--amarillo_fuerte);
+  
+}
+#referencias-iconos main a:visited{
+  color: var(--ladrillo);
+}
+
+
+ul#lista-iconos{
+  color:black;
+  padding-left: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 5px;
+}
+ul#lista-iconos li{
+  display: grid;
+  grid-template-columns: 35px auto;
+  gap: 5px;
+  background: rgb(235, 228, 228);
+  padding: 2px;
+  /* margin: 10px; */
+  align-items: center;
+  justify-content: center;
+}
+ul#lista-iconos li.icon-block-hidden{
+  display:none;
+}
+ul#lista-iconos p.icon-name{
+  font-weight: bold;
+  font-size: 14px;
+}
+ul#lista-iconos .icon-reference{
+  font-style: italic;
+  font-size: 12px;
+}
+ul#lista-iconos li img{
+  width: 100%;
+  border: 1px solid grey;
+  background-color: var(--gris_oscuro);
+}
+
+#dhs-button-close-ref{
+  color: white;
+  background-color: var(--ladrillo);
+  /* color:var(--blanco); */
+  border-radius: 5px;
+  margin: 20px;
+  font-size: 18px;
+  padding: 12px 16px;
+  /* display: grid; */
+  /* grid-template-columns: 120px 20px; */
+  /* gap: 10px; */
+  /* justify-content: center; */
+  /* align-items: center; */
+  text-align: center;
+  cursor: pointer;
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+}
