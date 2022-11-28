@@ -332,17 +332,21 @@ div.dhs-modal-pannel p.dhs-modal-pannel-main-text{
 
 
 /* FOOTER */
+footer{
+  position:relative;
+}
 #logodhs{
   width: 180px;
   position: absolute;
   bottom: 10px;
   left: 5px;
 }
-#dhs-footer p{
+#dhs-footer{
   color: var(--gris_claro);
-  position: absolute;
-  bottom: 10px;
-  width: 300px;
+  position:absolute;
+  width: 220px;
+  bottom: 15px;
+  right:1px;
   font-size: 12px;
   text-align: left;
 }
@@ -461,3 +465,31 @@ ul#lista-iconos li img{
   right: 20px;
   bottom: 20px;
 }
+/* @media (max-width: 700px) {
+ 
+  .dhs-panelSuperior{
+    display: grid;
+    grid-template-columns: 1fr 2fr 2fr;
+    height: 100vh;
+}
+} */
+
+@media (max-width: 400px) {
+  .dhs-panelSuperior{
+    grid-template-columns: 1fr;
+}
+#dhs-wrapper-lista2{
+  height: 520px;
+}
+footer{
+  position: relative;
+}
+#dhs-footer {
+  height:50px;
+  top: 700px;
+  right: inherit;
+  font-size: 10px;
+  padding: 10px;
+}
+}
+
