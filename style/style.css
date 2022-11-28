@@ -482,19 +482,21 @@ ul#lista-iconos li img{
   .dhs-panelSuperior{
     margin-top:60px;
     grid-template-columns: 1fr;
-}
-#dhs-wrapper-lista2{
-  height: 520px;
-}
-footer{
-  position: relative;
-}
-#dhs-footer {
-  height:50px;
-  top: 700px;
-  right: inherit;
-  font-size: 10px;
-  padding: 10px;
-}
+  } 
+  #dhs-wrapper-lista2{
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 40px auto 90px;
+  }
+  footer{
+    position: relative;
+  }
+  #dhs-footer {
+    height:50px;
+    top: 700px;
+    right: inherit;
+    font-size: 10px;
+    padding: 10px;
+  }
 }
 
