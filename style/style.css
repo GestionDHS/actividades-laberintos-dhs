@@ -474,8 +474,13 @@ ul#lista-iconos li img{
 }
 } */
 
-@media (max-width: 400px) {
+@media (max-width: 600px) {
+  #logodhs{
+    top: 10px;
+    left: 20px;
+  }
   .dhs-panelSuperior{
+    margin-top:60px;
     grid-template-columns: 1fr;
 }
 #dhs-wrapper-lista2{
