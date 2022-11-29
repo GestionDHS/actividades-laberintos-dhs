@@ -26,6 +26,7 @@ class Sortable_Blocks {
       },
       sort: false,
       animation: 500,
+      direction: "vertical",
     });
     this.sortable2 = new Sortable(this.lista2, {
       group: {
@@ -36,6 +37,7 @@ class Sortable_Blocks {
       sort: true,
       animation: 400,
       easing: "cubic-bezier(1, 0, 0, 1)",
+      direction: "vertical",
     });
     Sortable.create(this.lista2, {
       group: {
