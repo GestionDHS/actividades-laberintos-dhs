@@ -4,13 +4,18 @@ https://www.digitalhouse.com/ar/productos/escuelas
 */
 
 /*--------------------Sortable--sendOrders()---BTN-erase()----------- */
-class Sortable_Blocks{
-  constructor(sortableBlocksConfigObj){
-
+class Sortable_Blocks {
+  constructor(sortableBlocksConfigObj) {
     this.lista = document.getElementById(sortableBlocksConfigObj.idListaOrigen);
-    this.lista2 = document.getElementById(sortableBlocksConfigObj.idListaDestino);
-    this.listaErase = document.getElementById(sortableBlocksConfigObj.idListaErase)
-    this.botonErase = document.getElementById(sortableBlocksConfigObj.idBotonErase);
+    this.lista2 = document.getElementById(
+      sortableBlocksConfigObj.idListaDestino
+    );
+    this.listaErase = document.getElementById(
+      sortableBlocksConfigObj.idListaErase
+    );
+    this.botonErase = document.getElementById(
+      sortableBlocksConfigObj.idBotonErase
+    );
     this.editable = sortableBlocksConfigObj.editable;
 
     this.sortable = new Sortable(this.lista, {
@@ -26,10 +31,11 @@ class Sortable_Blocks{
       group: {
         name: "shared",
         pull: true,
+        put: true,
       },
       sort: true,
       animation: 400,
-      easing: "cubic-bezier(1, 0, 0, 1)"
+      easing: "cubic-bezier(1, 0, 0, 1)",
     });
     Sortable.create(this.lista2, {
       group: {
@@ -49,7 +55,7 @@ class Sortable_Blocks{
       forceFallback: false,
       fallbackClass: "sortable-fallback",
     });
-    if (this.editable){
+    if (this.editable) {
       this.habilitarEdicion();
     } else {
       this.deshabilitarEdicion();
@@ -57,33 +63,34 @@ class Sortable_Blocks{
   }
   async erase() {
     const confirmacion = await Swal.fire({
-      title: 'Con este botón podrás borrar todas las instrucciones ya programadas.',
-      text: '¿Deseas eliminarlas?',
-      icon: 'warning',
-      confirmButtonText: '¡Sí, eliminar!',
+      title:
+        "Con este botón podrás borrar todas las instrucciones ya programadas.",
+      text: "¿Deseas eliminarlas?",
+      icon: "warning",
+      confirmButtonText: "¡Sí, eliminar!",
       showCancelButton: true,
-      cancelButtonText:"¡No, cancelar!",
-      color: 'white',
-      background:"gray",
-      confirmButtonColor:"#007a4c",
-      cancelButtonColor:"#cc5a47"
-    })
-    if(confirmacion.isConfirmed){
+      cancelButtonText: "¡No, cancelar!",
+      color: "white",
+      background: "gray",
+      confirmButtonColor: "#007a4c",
+      cancelButtonColor: "#cc5a47",
+    });
+    if (confirmacion.isConfirmed) {
       let elem = document.querySelector("#dhs-lista2");
       elem.innerHTML = "";
     }
   }
-  agregarBloqueListaA(pars){
+  agregarBloqueListaA(pars) {
     const miBlock = this.crearBloque(pars);
     this.lista.appendChild(miBlock);
   }
-  agregarBloqueListaB(pars){
+  agregarBloqueListaB(pars) {
     const miBlock = this.crearBloque(pars);
     this.lista2.appendChild(miBlock);
   }
-  crearBloque(params){
+  crearBloque(params) {
     const blockListItem = document.createElement("li");
-    blockListItem.setAttribute("data-id",params.clave);
+    blockListItem.setAttribute("data-id", params.clave);
     const icon = document.createElement("IMG");
     icon.alt = params.nombreCompleto;
     icon.src = params.rutaImagen;
@@ -93,89 +100,88 @@ class Sortable_Blocks{
     caja.appendChild(txt);
     blockListItem.appendChild(icon);
     blockListItem.appendChild(caja);
-    if(params.inputElements){
-      for(let inpt of params.inputElements){
+    if (params.inputElements) {
+      for (let inpt of params.inputElements) {
         caja.appendChild(inpt);
       }
     }
     return blockListItem;
   }
   // Obligatoria
-  alimentarLog(){
+  alimentarLog() {
     const bloques = this.sendOrders();
-    if(bloques){
-      for (let bl of bloques){
+    if (bloques) {
+      for (let bl of bloques) {
         // console.log(bl)
         this.handleInstructions(bl);
       }
     }
   }
   // Obligatoria
-  habilitarEdicion(){
-    if(this.habilitarEdicion){
-      this.habilitarErase()
+  habilitarEdicion() {
+    if (this.habilitarEdicion) {
+      this.habilitarErase();
       this.habilitarSort();
     }
   }
   // Obligatoria
-  deshabilitarEdicion(){
+  deshabilitarEdicion() {
     this.deshabilitarErase();
     this.deshabilitarSort();
   }
-  habilitarSort(){
+  habilitarSort() {
     this.sortable.option("disabled", false);
     this.sortable2.option("disabled", false);
   }
-  deshabilitarSort(){
+  deshabilitarSort() {
     this.sortable.option("disabled", true);
     this.sortable2.option("disabled", true);
   }
-  habilitarErase(){
-    this.botonErase.addEventListener("click",this.erase);
+  habilitarErase() {
+    this.botonErase.addEventListener("click", this.erase);
   }
-  deshabilitarErase(){
-    this.botonErase.removeEventListener("click",this.erase);
+  deshabilitarErase() {
+    this.botonErase.removeEventListener("click", this.erase);
   }
-  
+
   sendOrders() {
     const lista = this.lista2.querySelectorAll("li");
     const bloques = [];
-    if(lista.length>0){
-      for(let item of lista){
+    if (lista.length > 0) {
+      for (let item of lista) {
         bloques.push(item.getAttribute("data-id"));
       }
     } else {
       Swal.fire({
-        title: 'No hay ninguna instrucción para ejecutar.',
-        text: '¿Continuamos?',
-        icon: 'warning',
-        confirmButtonText: 'Ok',
-        color: 'white',
-        background:"gray",
-        confirmButtonColor:"#007a4c"
-      })
+        title: "No hay ninguna instrucción para ejecutar.",
+        text: "¿Continuamos?",
+        icon: "warning",
+        confirmButtonText: "Ok",
+        color: "white",
+        background: "gray",
+        confirmButtonColor: "#007a4c",
+      });
     }
     return this.ordersToObjects(bloques);
   }
 
-  ordersToObjects(arrOfOrders){
+  ordersToObjects(arrOfOrders) {
     // const { nombre, personajes } = miJuego//sacar
-    const pasosDelAlumno = []
+    const pasosDelAlumno = [];
     const de = "lupe";
-    if(arrOfOrders){
-        arrOfOrders.forEach((order, index)=>{
-            const ord = {
-                de, // por defecto, en este juego, siempre será para Lupe.
-                numeroDeBloque: index, // el numero de bloque leido (orden)
-                valorPrincipal: order, // o abajo, derecha, etc. (string)
-                valorParametro: [] // para cuando tengamos bloques como "mover 10/20/30 pasos". En nuestro caso, no hay nada.  como en scratch pasa [tiempo,texto]     
-            }
-            pasosDelAlumno.push(ord)
-        })
-    }else{
-        return null
+    if (arrOfOrders) {
+      arrOfOrders.forEach((order, index) => {
+        const ord = {
+          de, // por defecto, en este juego, siempre será para Lupe.
+          numeroDeBloque: index, // el numero de bloque leido (orden)
+          valorPrincipal: order, // o abajo, derecha, etc. (string)
+          valorParametro: [], // para cuando tengamos bloques como "mover 10/20/30 pasos". En nuestro caso, no hay nada.  como en scratch pasa [tiempo,texto]
+        };
+        pasosDelAlumno.push(ord);
+      });
+    } else {
+      return null;
     }
-    return pasosDelAlumno
+    return pasosDelAlumno;
   }
-
 }
