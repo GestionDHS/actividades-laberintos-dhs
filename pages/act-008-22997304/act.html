@@ -1,0 +1,99 @@
+<!-- 
+  /*
+Desarrollado por Digital House Schools para su uso exlusivo en el marco de cursos del Digital Skills Diploma y Plataforma Playground (by Digital House).
+https://www.digitalhouse.com/ar/productos/escuelas
+*/
+ -->
+ <!DOCTYPE html>
+ <html>
+ 
+ <head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="shortcut icon" href="../../img/favicon.ico" type="image/x-icon">
+   <title>Actividades Especiales House Schools</title>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+   crossorigin="anonymous" referrerpolicy="no-referrer" />
+   <link rel="stylesheet" href="../../style/style.css">
+ </head>
+ 
+ <body class="dhs-body">
+   <img id="logodhs" src="../../img/logodhs.png" alt="Logo Digital House Schools">
+   <div class="dhs-panelSuperior">
+     <div id="dhs-wrapper-lista">
+       <h4>Bloques Disponibles</h4>
+       <ul class="dhs-lista-bloques" id="dhs-lista">
+         <!-- Created @instancias.js -->
+       </ul>
+     </div>
+     <div id="dhs-wrapper-lista2">
+       <h4 id="dhs-encabezado-lista2"></h4>
+       <ul class="dhs-lista-bloques" id="dhs-lista2">
+         <!-- Empty || Created @instancias.js -->
+       </ul>
+       <div id="dhs-erase">
+         <i id="dhs-erase-button" class="fa-sharp fa-solid fa-trash-can"></i>
+       </div>
+     </div>
+     <div id="panelJuego">
+       <h4 id="dhs-encabezado-desafio"></h4>
+       <div id="elemento-escenario"></div>
+       <button id="dhs-button">
+         <span>EJECUTAR</span>
+         <img src="../../img/basicos/ejecutar-triangulo-blanco.png" alt="Flecha Ejecución">
+       </button>
+       <!-- <footer id="dhs-footer">
+         <p>Desarrollado por <a target="_blank" href="https://www.digitalhouse.com/ar/productos/escuelas">Digital House Schools.</a><br>Con íconos de Flaticon <span id="dhs-button-open-ref" onclick="openRef()">(ver autores).</span></p>
+       </footer> -->
+     </div>
+   </div>
+   
+   <aside id="referencias-iconos">
+     <header>
+       <h5>Referencias</h5>
+       <img class="dhs-ref-logo" src="../../img/logodhs.png" alt="Logo Digital House Schools">
+     </header>
+     <main>  
+       <p>Desarrollado por <a target="_blank" href="https://www.digitalhouse.com/ar/productos/escuelas">Digital House Schools</a> para su uso exlusivo en el marco de cursos del Digital Skills Diploma y Plataforma Playground (by Digital House).</p>
+       <p>Licencias de imágenes utilizadas:</p>
+       <ul id="lista-iconos">
+         <!-- Created @instancias.js -->
+       </ul>
+     </main>
+     <button id="dhs-button-close-ref" onclick="closeRef()">Volver</button>
+   </aside>
+   <footer>
+    <p id="dhs-footer">Desarrollado por <a target="_blank" href="https://www.digitalhouse.com/ar/productos/escuelas">Digital House Schools.</a><br>Con íconos de Flaticon <span id="dhs-button-open-ref" onclick="openRef()">(ver autores).</span></p>
+  </footer>
+     <script>
+       function openRef(){
+         document.getElementById("referencias-iconos").style.display="block";
+       }
+       function closeRef(){
+         document.getElementById("referencias-iconos").style.display="none";
+       }
+     </script>
+ 
+ 
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"
+     integrity="sha512-Eezs+g9Lq4TCCq0wae01s9PuNWzHYoCMkE97e2qdkYthpI0pzC3UGB03lgEHn2XM85hDOUF6qgqqszs+iXU4UA=="
+   crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.js"
+   integrity="sha512-d+dtcSjz831KbYcB3pS7cd3cqlaZ/gbbnZWC4KeLM8AToNtm83Rbc5au5k3bFBh6EwlphOGJtj7oDg6k+NGbPA=="
+   crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+   
+   <script src="../../js/dhs-gallery.js"></script>
+ 
+   <script src="../../js/sortable-blocks.js"></script>
+   
+   <script src="../../js/clases.js"></script>
+   <script src="../city-commons/clases.js"></script>
+
+   <script src="../../js/block-show-interface.js"></script>
+   <script src="instancias.js"></script>
+   <script src="../delta-commons/globals.js"></script>
+ </body>
+ 
+ </html>

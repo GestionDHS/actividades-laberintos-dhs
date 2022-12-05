@@ -2,34 +2,34 @@
 Desarrollado por Digital House Schools para su uso exlusivo en el marco de cursos del Digital Skills Diploma y Plataforma Playground (by Digital House).
 https://www.digitalhouse.com/ar/productos/escuelas
 */
-class DHS_Game_Act{
-  constructor(gameActConfigObj){
+class DHS_Game_Act {
+  constructor(gameActConfigObj) {
     this.botonEjecutar = document.getElementById(gameActConfigObj.idBotonEjecutar);
     this.galeria = new DHS_Gallery();
     this.imagenes = {};
-    for(let th of gameActConfigObj.themesImagenes){
-      let merged = {...this.imagenes, ...this.galeria.getImagesForTheme(th)}
+    for (let th of gameActConfigObj.themesImagenes) {
+      let merged = { ...this.imagenes, ...this.galeria.getImagesForTheme(th) }
       this.imagenes = merged;
     }
-    for(let cl of gameActConfigObj.otrasClavesImagenes){
+    for (let cl of gameActConfigObj.otrasClavesImagenes) {
       this.imagenes[cl] = this.galeria.getImageForKey(cl);
     }
     this.habilitarEjecucion();
     this.instructionCount = -1;
     this.stepCount = -1;
   }
-  inicializar(){
+  inicializar() {
     this.juego = new Juego(this.configuracionJuego);
     this.juego.showInterface = new BlockShowInterface(this.juego); // debe poder elegirse otro tipo de interfaz
     this.elemescenario = document.getElementById(this.idElementoEscenario);
     this.juego.crearEscenario(this.elemescenario, this.matCrud);
     this.juego.agregarModal(this.dataPanelModal);
   }
-  crearReferencias(idElementoHTML){
+  crearReferencias(idElementoHTML) {
     const listaReferencias = document.getElementById(idElementoHTML)
-    for (let clave in this.imagenes){
+    for (let clave in this.imagenes) {
       let recurso = this.imagenes[clave];
-      if(recurso.showLicense){
+      if (recurso.showLicense) {
         let item = document.createElement("LI");
         item.innerHTML = `
           <img src="${recurso.url}" alt="${recurso.nombre}">
@@ -43,56 +43,56 @@ class DHS_Game_Act{
       }
     }
   }
-  crearReglasPathWall(fondos=false){
+  crearReglasPathWall(fondos = false) {
     let hd = document.querySelector("head");
-    let style =  document.createElement("STYLE");
-    if (fondos){
-      style.innerHTML = 
-      ".wall{background-image:url("+this.imagenes.wall.url+"); background-color:"+fondos.wallBackgroundColor+"}"+
-      ".path{background-image:url("+this.imagenes.path.url+"); background-color:"+fondos.pathBackgroundColor+"}";
-    }else{
-      style.innerHTML = 
-      ".wall{background-image:url("+this.imagenes.wall.url+")}"+
-      ".path{background-image:url("+this.imagenes.path.url+")}";
+    let style = document.createElement("STYLE");
+    if (fondos) {
+      style.innerHTML =
+        ".wall{background-image:url(" + this.imagenes.wall.url + "); background-color:" + fondos.wallBackgroundColor + "}" +
+        ".path{background-image:url(" + this.imagenes.path.url + "); background-color:" + fondos.pathBackgroundColor + "}";
+    } else {
+      style.innerHTML =
+        ".wall{background-image:url(" + this.imagenes.wall.url + ")}" +
+        ".path{background-image:url(" + this.imagenes.path.url + ")}";
     }
     hd.appendChild(style);
   }
-  habilitarEjecucion(){
-    this.botonEjecutar.setAttribute("onclick","global_ejecutar()")
+  habilitarEjecucion() {
+    this.botonEjecutar.setAttribute("onclick", "global_ejecutar()")
     this.botonEjecutar.disabled = false;
   }
-  deshabilitarEjecucion(){
-    this.botonEjecutar.setAttribute("onclick","")
+  deshabilitarEjecucion() {
+    this.botonEjecutar.setAttribute("onclick", "")
     this.botonEjecutar.disabled = true;
   }
-  habilitar(){
+  habilitar() {
     this.habilitarEjecucion();
-    if(this.interface){
+    if (this.interface) {
       this.interface.habilitarEdicion();
     }
   }
-  deshabilitar(){
+  deshabilitar() {
     this.deshabilitarEjecucion();
-    if(this.interface){
+    if (this.interface) {
       this.interface.deshabilitarEdicion();
     }
   }
-  ejecutar(){
+  ejecutar() {
     // console.log(this);
     this.deshabilitar();
     this.juego.reiniciar();
     this.juego.showInterface.desmarcarTodos();
-    this.juego.modo="prerun";
+    this.juego.modo = "prerun";
     this.instructionCount = -1;
     this.stepCount = -1;
     this.interface.alimentarLog();
     const _esto = this;
-    setTimeout(function(){
+    setTimeout(function () {
       _esto.juego.runLog();
-    },1000);
-    setTimeout(function(){
+    }, 1000);
+    setTimeout(function () {
       _esto.habilitar();
-    },(_esto.juego.log.length+0.2)*1000);
+    }, ((_esto.juego.log.length) * _esto.juego.speedMiliseconds)+_esto.juego.speedMiliseconds*2);
   }
 }
 
@@ -103,14 +103,14 @@ class DHS_Game_Act{
  * @extends {DHS_Game_Act}
  */
 
-class DHS_Sortable_Game_Act extends DHS_Game_Act{
-  constructor(x){
+class DHS_Sortable_Game_Act extends DHS_Game_Act {
+  constructor(x) {
     super(x);
     this.interface = new Sortable_Blocks({
-      idListaOrigen:"dhs-lista",
-      idListaDestino:"dhs-lista2",
-      idListaErase:"dhs-erase",
-      idBotonErase:"dhs-erase-button",
+      idListaOrigen: "dhs-lista",
+      idListaDestino: "dhs-lista2",
+      idListaErase: "dhs-erase",
+      idBotonErase: "dhs-erase-button",
       editable: x.editable,
       edicionHabilitable: x.edicionHabilitable
     })
@@ -124,54 +124,199 @@ class DHS_Sortable_Game_Act extends DHS_Game_Act{
  * @extends {DHS_Sortable_Game_Act}
  */
 
- class DHS_Sortable_Game_Act_Absolute extends DHS_Sortable_Game_Act{
-  constructor(x){
-    if(!x.themesImagenes.includes("absolute-movements")){
+class DHS_Sortable_Game_Act_Absolute extends DHS_Sortable_Game_Act {
+  constructor(x) {
+    if (!x.themesImagenes.includes("absolute-movements")) {
       x.themesImagenes.push("absolute-movements");
     }
     super(x);
     let inputPasos = null;
-    if(x.enableParameters){
+    if (x.enableParameters) {
       inputPasos = document.createElement("SELECT");
       const opciones = ["1 Casillero", "2 Casilleros", "3 Casilleros", "4 Casilleros", "5 Casilleros", "6 Casilleros", "7 Casilleros", "8 Casilleros", "9 Casilleros"];
-      opciones.forEach((op,index)=>{
+      opciones.forEach((op, index) => {
         let opEl = document.createElement("OPTION");
         opEl.innerHTML = op;
-        opEl.value = index+1;
+        opEl.value = index + 1;
         inputPasos.appendChild(opEl);
       });
     }
     this.interface.agregarBloqueListaA(
-        {
-            nombreCompleto: this.imagenes.arriba.nombre,
-            rutaImagen: this.imagenes.arriba.url,
-            clave: "arriba",
-            inputElements: x.enableParameters ? [inputPasos.cloneNode(true)] : null,
-        }
+      {
+        nombreCompleto: this.imagenes.arriba.nombre,
+        rutaImagen: this.imagenes.arriba.url,
+        clave: "arriba",
+        inputElements: x.enableParameters ? [inputPasos.cloneNode(true)] : null,
+      }
     );
     this.interface.agregarBloqueListaA(
-        {
-            nombreCompleto: this.imagenes.abajo.nombre,
-            rutaImagen: this.imagenes.abajo.url,
-            clave: "abajo",
-            inputElements: x.enableParameters ? [inputPasos.cloneNode(true)] : null,
-        }
+      {
+        nombreCompleto: this.imagenes.abajo.nombre,
+        rutaImagen: this.imagenes.abajo.url,
+        clave: "abajo",
+        inputElements: x.enableParameters ? [inputPasos.cloneNode(true)] : null,
+      }
     );
     this.interface.agregarBloqueListaA(
-        {
-            nombreCompleto: this.imagenes.izquierda.nombre,
-            rutaImagen: this.imagenes.izquierda.url,
-            clave: "izquierda",
-            inputElements: x.enableParameters ? [inputPasos.cloneNode(true)] : null,
-        }
+      {
+        nombreCompleto: this.imagenes.izquierda.nombre,
+        rutaImagen: this.imagenes.izquierda.url,
+        clave: "izquierda",
+        inputElements: x.enableParameters ? [inputPasos.cloneNode(true)] : null,
+      }
     );
     this.interface.agregarBloqueListaA(
-        {
-            nombreCompleto: this.imagenes.derecha.nombre,
-            rutaImagen: this.imagenes.derecha.url,
-            clave: "derecha",
-            inputElements: x.enableParameters ? [inputPasos.cloneNode(true)] : null,
-        }
+      {
+        nombreCompleto: this.imagenes.derecha.nombre,
+        rutaImagen: this.imagenes.derecha.url,
+        clave: "derecha",
+        inputElements: x.enableParameters ? [inputPasos.cloneNode(true)] : null,
+      }
+    );
+  }
+}
+
+class DHS_Sortable_Game_Act_Left_Right extends DHS_Sortable_Game_Act {
+  constructor(x) {
+    if (!x.themesImagenes.includes("relative-movements")) {
+      x.themesImagenes.push("relative-movements");
+    }
+    super(x);
+    let inputPasos = null;
+    if (x.enableParameters) {
+      inputPasos = document.createElement("SELECT");
+      // const opciones = ["-5 Casilleros", "-4 Casilleros","-3 Casilleros","-2 Casilleros", "-1 Casillero", "+1 Casillero", "+2 Casilleros", "+3 Casilleros", "+4 Casilleros", "+5 Casilleros"];
+      const opciones = ["1 Casillero", "2 Casilleros", "3 Casilleros", "4 Casilleros", "5 Casilleros"];
+      opciones.forEach((op, index) => {
+
+        let opEl = document.createElement("OPTION");
+        opEl.innerHTML = op;
+        opEl.value = index + 1;
+        inputPasos.appendChild(opEl);
+      });
+    }
+    this.interface.agregarBloqueListaA(
+      {
+        nombreCompleto: this.imagenes.avanzar.nombre,
+        rutaImagen: this.imagenes.avanzar.url,
+        clave: "avanzar",
+        inputElements: x.enableParameters ? [inputPasos.cloneNode(true)] : null,
+      }
+    );
+    this.interface.agregarBloqueListaA(
+      {
+        nombreCompleto: this.imagenes.girarIzquierda.nombre,
+        rutaImagen: this.imagenes.girarIzquierda.url,
+        clave: "girarIzquierda",
+        inputElements: null,
+      }
+    );
+    this.interface.agregarBloqueListaA(
+      {
+        nombreCompleto: this.imagenes.girarDerecha.nombre,
+        rutaImagen: this.imagenes.girarDerecha.url,
+        clave: "girarDerecha",
+        inputElements: null,
+      }
+    );
+  }
+}
+
+class DHS_Sortable_Game_Act_Girar_Grados extends DHS_Sortable_Game_Act {
+  constructor(x) {
+    if (!x.themesImagenes.includes("relative-movements")) {
+      x.themesImagenes.push("relative-movements");
+    }
+    super(x);
+    let inputPasos = null;
+    if (x.enableParameters) {
+      inputPasos = document.createElement("SELECT");
+      const opciones = ["1 Casillero", "2 Casilleros", "3 Casilleros", "4 Casilleros", "5 Casilleros"];
+      opciones.forEach((op, index) => {
+
+        let opEl = document.createElement("OPTION");
+        opEl.innerHTML = op;
+        opEl.value = index + 1;
+        inputPasos.appendChild(opEl);
+      });
+    }
+    let inputGrados = null;
+    if (x.enableParameters) {
+      inputGrados = document.createElement("SELECT");
+      const opciones = [" + 90 grados", " - 90 grados"];
+      const valores = [90,-90]
+      opciones.forEach((op, index) => {
+
+        let opEl = document.createElement("OPTION");
+        opEl.innerHTML = op;
+        opEl.value = valores[index];
+        inputGrados.appendChild(opEl);
+      });
+    }
+    this.interface.agregarBloqueListaA(
+      {
+        nombreCompleto: this.imagenes.avanzar.nombre,
+        rutaImagen: this.imagenes.avanzar.url,
+        clave: "avanzar",
+        inputElements: [inputPasos.cloneNode(true)],
+      }
+    );
+    this.interface.agregarBloqueListaA(
+      {
+        nombreCompleto: this.imagenes.girarGrados.nombre,
+        rutaImagen: this.imagenes.girarGrados.url,
+        clave: "girar",
+        inputElements: [inputGrados.cloneNode(true)],
+      }
+    );
+  }
+}
+class DHS_Sortable_Game_Act_Apuntar_Direccion extends DHS_Sortable_Game_Act {
+  constructor(x) {
+    if (!x.themesImagenes.includes("relative-movements")) {
+      x.themesImagenes.push("relative-movements");
+    }
+    super(x);
+    let inputPasos = null;
+    if (x.enableParameters) {
+      inputPasos = document.createElement("SELECT");
+      const opciones = ["1 Casillero", "2 Casilleros", "3 Casilleros", "4 Casilleros", "5 Casilleros"];
+      opciones.forEach((op, index) => {
+
+        let opEl = document.createElement("OPTION");
+        opEl.innerHTML = op;
+        opEl.value = index + 1;
+        inputPasos.appendChild(opEl);
+      });
+    }
+    let inputDireccion = null;
+    if (x.enableParameters) {
+      inputDireccion = document.createElement("SELECT");
+      const opciones = ["0", "90", "180", "270"];
+      const valores = [0,90,180,270]
+      opciones.forEach((op, index) => {
+
+        let opEl = document.createElement("OPTION");
+        opEl.innerHTML = op;
+        opEl.value = valores[index];
+        inputDireccion.appendChild(opEl);
+      });
+    }
+    this.interface.agregarBloqueListaA(
+      {
+        nombreCompleto: this.imagenes.avanzar.nombre,
+        rutaImagen: this.imagenes.avanzar.url,
+        clave: "avanzar",
+        inputElements: [inputPasos.cloneNode(true)],
+      }
+    );
+    this.interface.agregarBloqueListaA(
+      {
+        nombreCompleto: this.imagenes.apuntar.nombre,
+        rutaImagen: this.imagenes.apuntar.url,
+        clave: "apuntar",
+        inputElements: [inputDireccion.cloneNode(true)],
+      }
     );
   }
 }
@@ -181,32 +326,32 @@ class Juego {
   constructor(gameConfigObj) {
     this.anchoBaseElementos = gameConfigObj.anchoBaseElementos;
     this.errorsHalt = gameConfigObj.errorsHalt;
-    this.nombre = gameConfigObj.nombre; 
+    this.nombre = gameConfigObj.nombre;
     this._matrizCruda = gameConfigObj.matrizCruda;
     this.modo = gameConfigObj.modo;
     this.wallCollideMessage = gameConfigObj.wallCollideMessage;
     this.boundsCollideMessage = gameConfigObj.boundsCollideMessage;
     this.nonHaltingErrorMessage = gameConfigObj.nonHaltingErrorMessage;
     this.speedMiliseconds = gameConfigObj.speedMiliseconds;
-    this.colorBordes = gameConfigObj.colorBordes? gameConfigObj.colorBordes : "white";
+    this.colorBordes = gameConfigObj.colorBordes ? gameConfigObj.colorBordes : "white";
     // this.wallImageUrl = gameConfigObj.wallImageUrl;
     // this.pathImageUrl = gameConfigObj.pathImageUrl
 
-    this.log=[];
+    this.log = [];
     this.showInterface = false;
 
     this.escenario; // class Escenario
     this.personajes = []; // [class Personaje,]
-    
+
     this.pasoActual = 0; // Contador de pasos "turnos"
     this.pasosPreprogramadosOriginal = []; // [{de: "fulano", pasos:[]}, {}, {}]
     this.pasosPreprogramadosTraducidos = []; // ["abajo","izquierda","derecha"]
     this.movimientosYaValidados = []; // ["abajo","decir_choqué"];
   }
-  crearEscenario(elementoHTML,matriz){
-    return this._crearEscenario(elementoHTML,matriz);
+  crearEscenario(elementoHTML, matriz) {
+    return this._crearEscenario(elementoHTML, matriz);
   }
-  _crearEscenario(elementoHTML,matriz) {
+  _crearEscenario(elementoHTML, matriz) {
     this.escenario = new Escenario(
       matriz,
       elementoHTML,
@@ -228,7 +373,7 @@ class Juego {
     document.querySelector("head").appendChild(reglaCasilleros)
     return this.escenario;
   }
-  agregarPersonaje(classType,configObjPersonajeAgregando) {
+  agregarPersonaje(classType, configObjPersonajeAgregando) {
     configObjPersonajeAgregando.anchoBase = this.anchoBaseElementos;
     const person = new classType(configObjPersonajeAgregando, this);
     this.personajes.push(person);
@@ -238,30 +383,30 @@ class Juego {
     return this.personajes.find((p) => p.nameId == nameId);
   }
 
-  agregarModal(modalPannelObj){
-    this.modalPannel = new ModalPannel(modalPannelObj,this);
+  agregarModal(modalPannelObj) {
+    this.modalPannel = new ModalPannel(modalPannelObj, this);
     return this.modalPannel
   }
 
-  setSpeed(milisegundos){
+  setSpeed(milisegundos) {
     this.speedMiliseconds = milisegundos
-    for(let pers of this.personajes){
+    for (let pers of this.personajes) {
       pers.interfaz.setSpeed(milisegundos)
     }
   }
 
-  terminateAll(){
-    for(let pers of this.personajes){
+  terminateAll() {
+    for (let pers of this.personajes) {
       pers.terminate()
     }
   }
 
-  reiniciar(){
-    this.modo="inicio";
-    for(let pers of this.personajes){
+  reiniciar() {
+    this.modo = "inicio";
+    for (let pers of this.personajes) {
       pers.initialize()
     }
-    if(this.modalPannel){
+    if (this.modalPannel) {
       this.modalPannel.initialize();
     }
   }
@@ -273,38 +418,37 @@ class Juego {
     // return{x:"un objeto con el status de la validacion para el mensaje final"}
   }
 
-  runLog(){
+  runLog() {
     this.reiniciar()
-    this.status="running"
-    let speed = this.speedMiliseconds;
-    function iterar(lista,posicion=0){
-      if(posicion<lista.length){
+    this.status = "running"
+    const juego = this;
+    function iterar(lista, posicion = 0, game) {
+      if (posicion < lista.length) {
         let item = lista[posicion];
-        // console.log(item)
         item.personaje[item.nombreFuncion](item.details);
-        setTimeout(()=>{
-          iterar(lista,posicion+1)
-        },speed)
+        setTimeout(() => {
+          iterar(lista, posicion + 1, game)
+        }, game.speedMiliseconds)
       }
     }
     let myLog = [...this.log];
     this.log = [];
-    iterar(myLog);
+    iterar(myLog,0,juego);
   }
 
 }
 
-class ModalPannel{
-  constructor(modalPannelObj, juego){
+class ModalPannel {
+  constructor(modalPannelObj, juego) {
     this.juego = juego;
     this.startsHidden = modalPannelObj.startsHidden;
     this.initialTitleText = modalPannelObj.title;
     this.initialImageUrl = modalPannelObj.imageUrl;
     this.initialMainText = modalPannelObj.mainText;
-    
+
     this.elementoPannel = document.createElement("DIV");
     this.elementoPannel.classList.add("dhs-modal-pannel");
-    
+
     this.titleElement = document.createElement("P");
     this.titleElement.classList.add("dhs-modal-pannel-title");
     this.imageElement = document.createElement("IMG");
@@ -319,8 +463,8 @@ class ModalPannel{
     this.initialize();
     juego.escenario.elementoHTML.appendChild(this.elementoPannel);
   }
-  initialize(){
-    if(this.startsHidden){
+  initialize() {
+    if (this.startsHidden) {
       this.ocultar();
     } else {
       this.mostrar();
@@ -329,12 +473,12 @@ class ModalPannel{
     this.imageElement.src = this.initialImageUrl;
     this.mainTextElement.innerHTML = this.initialMainText;
   }
-  mostrar(){
-    if(this.juego.modo != "prerun"){
+  mostrar() {
+    if (this.juego.modo != "prerun") {
       this.elementoPannel.classList.remove("dhs-modal-pannel-hidden");
     }
   }
-  ocultar(){
+  ocultar() {
     this.elementoPannel.classList.add("dhs-modal-pannel-hidden");
   }
 }
@@ -345,25 +489,25 @@ class Escenario {
     elementoHTML,
     unidadAnchoDeseada,
     colorBordes = "white"
-    ) {
-      this.matrizCruda = matrizCruda; // Crudo de casilleros a crear
-      this.colorBordes = colorBordes;
-      this.renderizarLaberinto(elementoHTML, unidadAnchoDeseada);
-      this.objetosCasilleros = []; // La matriz de objetos Casilleros
-      for (let f=0; f<matrizCruda.length; f++) {
-        let newRow = [];
-        for (let c=0; c<matrizCruda[f].length; c++) {
-          let newCas;
-          if (matrizCruda[f][c]==1){
-            newCas = new Casillero("wall",f,c,unidadAnchoDeseada,this.colorBordes);
-          } else if (matrizCruda[f][c]==0){
-            newCas = new Casillero("path",f,c,unidadAnchoDeseada,this.colorBordes);
-          } else{
-            console.log("ERROR EN CASILLEROS");
-          }
-          newRow.push(newCas);
-          this.elementoHTML.appendChild(newCas.elementoHTML);
+  ) {
+    this.matrizCruda = matrizCruda; // Crudo de casilleros a crear
+    this.colorBordes = colorBordes;
+    this.renderizarLaberinto(elementoHTML, unidadAnchoDeseada);
+    this.objetosCasilleros = []; // La matriz de objetos Casilleros
+    for (let f = 0; f < matrizCruda.length; f++) {
+      let newRow = [];
+      for (let c = 0; c < matrizCruda[f].length; c++) {
+        let newCas;
+        if (matrizCruda[f][c] == 1) {
+          newCas = new Casillero("wall", f, c, unidadAnchoDeseada, this.colorBordes);
+        } else if (matrizCruda[f][c] == 0) {
+          newCas = new Casillero("path", f, c, unidadAnchoDeseada, this.colorBordes);
+        } else {
+          console.log("ERROR EN CASILLEROS");
         }
+        newRow.push(newCas);
+        this.elementoHTML.appendChild(newCas.elementoHTML);
+      }
       this.objetosCasilleros.push(newRow);
     }
   }
@@ -379,7 +523,7 @@ class Escenario {
 }
 
 class Casillero {
-  constructor(type, f, c, unidadAncho,colorBorde) {
+  constructor(type, f, c, unidadAncho, colorBorde) {
     this.elementoHTML = document.createElement("DIV");
     this.elementoHTML.classList.add("casillero");
     this.idElemento = "cas-" + f + "-" + c;
@@ -388,10 +532,10 @@ class Casillero {
     this.occupants = [];
     this.setear(type)
   }
-  setear(tipo){
+  setear(tipo) {
     this.type = tipo;
-    this.walkable = tipo=="path";
-    this.elementoHTML.setAttribute("class","casillero " + tipo);
+    this.walkable = tipo == "path";
+    this.elementoHTML.setAttribute("class", "casillero " + tipo);
   }
 }
 
@@ -419,6 +563,8 @@ class Personaje {
     this.initialStatus = persConfigObj.currentStatus;
     this.initial_y = persConfigObj.initial_y;
     this.initial_x = persConfigObj.initial_x;
+    this.initial_direc = persConfigObj.direccion ? persConfigObj.direccion : 0;
+    this.direccion = this.initial_direc;
     this.collisions = [];
     persConfigObj.juego = this.juego;
     this.interfaz = new INTERFAZ_PERSONAJE(persConfigObj);
@@ -427,20 +573,23 @@ class Personaje {
     this.initialize();
   }
 
-  initialize(){
+  initialize() {
     this.alive = true;
+    this.juntadosCount = 0;
     this.callar();
     this.setStatus(this.initialStatus);
-    this.actualizarCasillerosJuego(this.initial_y,this.initial_x,true);
+    this.actualizarCasillerosJuego(this.initial_y, this.initial_x, true);
+    this.direccion = this.initial_direc;
+    this.interfaz.rotarPersonaje(this.direccion);
     this.interfaz.moverPersonajeHTML(
-      this.initial_y*this.juego.anchoBaseElementos,
-      this.initial_x*this.juego.anchoBaseElementos
+      this.initial_y * this.juego.anchoBaseElementos,
+      this.initial_x * this.juego.anchoBaseElementos
     )
   }
 
-  setStatus(stat){
+  setStatus(stat) {
     this.currentStatus = stat;
-    if(this.juego.modo!="prerun"){
+    if (this.juego.modo != "prerun") {
       this.interfaz.setImage(this.statuses[stat].imageUrl)
     }
   }
@@ -458,8 +607,8 @@ class Personaje {
       this.juego.escenario.objetosCasilleros[nuevaY][nuevaX];
     this.casilleroActual.occupants.push(this);
   }
-  _forceDecir(texto, milisegundos=3000){
-    if(this.interfaz.hasTooltips && this.juego.modo != "prerun"){
+  _forceDecir(texto, milisegundos = 3000) {
+    if (this.interfaz.hasTooltips && this.juego.modo != "prerun") {
       this.interfaz.elementoTextoTooltip.innerHTML = texto;
       this.interfaz.elementoHTML.classList.add("tooltipVisible");
       setTimeout(() => {
@@ -467,21 +616,21 @@ class Personaje {
       }, milisegundos);
     }
   }
-  _decir(texto, milisegundos=3000) {
-    if(!this.alive){return false}
-    else this._forceDecir(texto,milisegundos);
+  _decir(texto, milisegundos = 3000) {
+    if (!this.alive) { return false }
+    else this._forceDecir(texto, milisegundos);
   }
 
-  callar(){
+  callar() {
     this.interfaz.elementoHTML.classList.remove("tooltipVisible")
   }
-  
+
   terminate() {
     this.alive = false;
   }
 
-  decir(texto,milisegundos=3000){
-    this._decir(texto,milisegundos);
+  decir(texto, milisegundos = 3000) {
+    this._decir(texto, milisegundos);
     // Y LOGGEARLO!!
   }
 }
@@ -500,12 +649,12 @@ class INTERFAZ_PERSONAJE {
       this.elementoHTML.id = interfazConfigObj.idUsarHTML;
       this.juego.escenario.elementoHTML.appendChild(this.elementoHTML)
     }
-    
+
     this.elementoHTML.classList.add("personaje");
     this.elementoHTML.style.zIndex = interfazConfigObj.zindex;
-  
-    this.setSpeed(this.juego.speedMiliseconds)
-    
+
+    // this.setSpeed(this.juego.speedMiliseconds)
+
     if (interfazConfigObj.hasTooltips) {
       this.elementoHTML.classList.add("tooltip");
       this.elementoTextoTooltip = document.createElement("DIV");
@@ -514,29 +663,34 @@ class INTERFAZ_PERSONAJE {
       this.elementoTextoTooltip.innerText = "...";
       this.elementoHTML.appendChild(this.elementoTextoTooltip);
     }
-    
+
     if (interfazConfigObj.yaConImagenEnHtml) {
       this.imagenAnidada = this.elementoHTML.querySelector("IMG");
     } else {
       this.imagenAnidada = document.createElement("IMG");
-      if(this.interfazConfigObj.padding){
+      if (this.interfazConfigObj.padding) {
         this.imagenAnidada.style.padding = this.interfazConfigObj.padding;
       }
       this.elementoHTML.appendChild(this.imagenAnidada);
     }
+    this.setSpeed(this.juego.speedMiliseconds)
   }
-  setImage(url){
+  setImage(url) {
     this.imagenAnidada.setAttribute("src", url)
   }
-  setSpeed(milisegundos){
-    this.elementoHTML.style.transition="all " + milisegundos/1000 + "s"
+  setSpeed(milisegundos) {
+    this.elementoHTML.style.transition = "all " + milisegundos / 1000 + "s"
+    this.imagenAnidada.style.transition = "all " + milisegundos / 1000 + "s"
   }
-  moverPersonajeHTML(posY, posX){
-    if(this.juego.modo != "prerun"){
+  moverPersonajeHTML(posY, posX) {
+    if (this.juego.modo != "prerun") {
       // console.log("MOVIENDO")
       this.elementoHTML.style.left = posX + "px";
       this.elementoHTML.style.top = posY + "px";
     }
+  }
+  rotarPersonaje(grados){
+    this.imagenAnidada.style.transform = `rotate(${grados}deg)`
   }
 }
 
@@ -547,30 +701,30 @@ class INTERFAZ_PERSONAJE {
  * @extends {Personaje}
  */
 
-class PersonajeMovible extends Personaje{
-  constructor(persConfigObj, juego){
+class PersonajeMovible extends Personaje {
+  constructor(persConfigObj, juego) {
     super(persConfigObj, juego);
   }
   chequearValidezMovimiento(nuevaY, nuevaX) {
     // Chequea tanto por ""existencia"" como por walkability
-    const existe =       
+    const existe =
       nuevaY >= 0 &&
       nuevaX >= 0 &&
       nuevaY < this.juego.escenario.objetosCasilleros.length &&
       nuevaX < this.juego.escenario.objetosCasilleros[nuevaY].length;
     // const casilleroObservado = this.juego.escenario.objetosCasilleros[nuevaY][nuevaX];
-    const isWalkable = existe &&  this.juego.escenario.objetosCasilleros[nuevaY][nuevaX].walkable;
+    const isWalkable = existe && this.juego.escenario.objetosCasilleros[nuevaY][nuevaX].walkable;
     let advanceFactor;
     let mensaje = null;
     let continua;
     let shouldUpdateCasilleros = false;
-    if(!existe){
-      advanceFactor = this.juego.errorsHalt? 0.35 : 0;
-      mensaje = this.juego.errorsHalt? this.juego.boundsCollideMessage : this.juego.nonHaltingErrorMessage;
+    if (!existe) {
+      advanceFactor = this.juego.errorsHalt ? 0.35 : 0;
+      mensaje = this.juego.errorsHalt ? this.juego.boundsCollideMessage : this.juego.nonHaltingErrorMessage;
       continua = !this.juego.errorsHalt;
     } else if (!isWalkable) {
-      advanceFactor = this.juego.errorsHalt? 0.45 : 0;
-      mensaje = this.juego.errorsHalt? this.juego.wallCollideMessage : this.juego.nonHaltingErrorMessage;
+      advanceFactor = this.juego.errorsHalt ? 0.45 : 0;
+      mensaje = this.juego.errorsHalt ? this.juego.wallCollideMessage : this.juego.nonHaltingErrorMessage;
       continua = !this.juego.errorsHalt;
     } else {
       advanceFactor = 1
@@ -586,26 +740,26 @@ class PersonajeMovible extends Personaje{
       shouldUpdateCasilleros
     };
   }
-  
-  detectarColisiones(){
+
+  detectarColisiones() {
     const casilleroObservado = this.casilleroActual;
     let colision;
-    for(let ocupante of casilleroObservado.occupants){
+    for (let ocupante of casilleroObservado.occupants) {
       // console.log(ocupante.tipoPersonaje);
-      colision = this.collisions.find(c=>c.with==ocupante.tipoPersonaje);
-      if (colision){
+      colision = this.collisions.find(c => c.with == ocupante.tipoPersonaje);
+      if (colision) {
         colision.ocupanteAfectado = ocupante;
         break
       }
     }
     return colision;
   }
-  
-  _realizarMovimiento(params){
-    // params={y:0, x:+1,details}
-    if(!this.alive){return false}
 
-    const cas_y_original = this.cas_y_actual 
+  _realizarMovimiento(params) {
+    // params={y:0, x:+1,details}
+    if (!this.alive) { return false }
+
+    const cas_y_original = this.cas_y_actual
     const cas_x_original = this.cas_x_actual;
     const cas_y_nuevo = cas_y_original + params.y;
     const cas_x_nuevo = cas_x_original + params.x;
@@ -613,59 +767,68 @@ class PersonajeMovible extends Personaje{
     let avanceY = params.y * chequeo.advanceFactor * this.juego.anchoBaseElementos;
     let avanceX = params.x * chequeo.advanceFactor * this.juego.anchoBaseElementos;
     let continua = chequeo.continua;
-    if(!chequeo.continua){this.terminate()}
-    if(chequeo.mensaje){
-      this._forceDecir(chequeo.mensaje,3000);
+    if (!chequeo.continua) { this.terminate() }
+    if (chequeo.mensaje) {
+      this._forceDecir(chequeo.mensaje, 3000);
     }
-    if(chequeo.shouldUpdateCasilleros){
+    if (chequeo.shouldUpdateCasilleros) {
       this.actualizarCasillerosJuego(cas_y_nuevo, cas_x_nuevo);
     }
     // INTERACCIONES
     const colision = this.detectarColisiones();
-    if(colision){
+    let victoryFlag=true;
+    if (colision) {
       avanceY = params.y * chequeo.advanceFactor * colision.advanceFactor * this.juego.anchoBaseElementos;
       avanceX = params.x * chequeo.advanceFactor * colision.advanceFactor * this.juego.anchoBaseElementos;
-      if(colision.selfMessage){
-        this._decir(colision.selfMessage,20000)
+      if (colision.selfMessage) {
+        this._decir(colision.selfMessage, 20000)
       }
-      if(colision.selfHandler){
-        this[colision.selfHandler]()
+      if (colision.selfHandler) {
+       const selfHandlerAction =  this[colision.selfHandler]();
+      //  console.log(selfHandlerAction);
+       if(selfHandlerAction && selfHandlerAction.victoryException===true){
+        // console.log(selfHandlerAction)
+        // console.log("ACAAA")
+        victoryFlag = false;
+       }
       }
-      if(colision.thirdPartyMessage){
+      if (colision.thirdPartyMessage) {
         colision.ocupanteAfectado._decir(colision.thirdPartyMessage)
       }
-      if(colision.thirdPartyHandler){
+      if (colision.thirdPartyHandler) {
         colision.ocupanteAfectado[colision.thirdPartyHandler]()
       }
-      if(colision.shouldHalt){
+      if (colision.shouldHalt) {
         continua = false;
         this.terminate();
       } else {
         continua = true;
       }
     }
-    const nuevaXPos = cas_x_original*this.juego.anchoBaseElementos + avanceX;
-    const nuevaYPos = cas_y_original*this.juego.anchoBaseElementos + avanceY;
+    const nuevaXPos = cas_x_original * this.juego.anchoBaseElementos + avanceX;
+    const nuevaYPos = cas_y_original * this.juego.anchoBaseElementos + avanceY;
     this.interfaz.moverPersonajeHTML(nuevaYPos, nuevaXPos);
+
     const log = {
       personaje: this,
       continua: continua,
-      isVictory: colision ? colision.isVictory : false,
+      isVictory: colision ? colision.isVictory&&victoryFlag : false,
       mensajeValidez: chequeo.mensaje,
       mensajeColisionSelf: colision ? colision.selfMessage : null,
       mensajeColisionThird: colision ? colision.thirdPartyMessage : null,
       details: params.details,
       nombreFuncion: params.nombreFuncion
     }
-    // console.log(log)
-    if(this.juego.modo == "prerun"){
+    colision ? console.log(colision.isVictory):null
+    if (this.juego.modo == "prerun") {
       this.juego.log.push(log);
-    } else if(this.juego.showInterface){
+    } else if (this.juego.showInterface) {
       this.juego.showInterface.show(log)
     }
+    // console.log(colision)
     return log;
   }
-  addCollision(collisionObj){
+  addCollision(collisionObj) {
     this.collisions.push(collisionObj)
   }
 }
@@ -676,25 +839,25 @@ class PersonajeMovible extends Personaje{
  * @class PersonajeMovibleAbsoluto
  * @extends {PersonajeMovible}
  */
-class PersonajeMovibleAbsoluto extends PersonajeMovible{
-  constructor(persConfigObj, juego){
+class PersonajeMovibleAbsoluto extends PersonajeMovible {
+  constructor(persConfigObj, juego) {
     super(persConfigObj, juego);
   }
 
-  moverDerecha(details={origin:"unknown"}){
-    const ejecucion = this._realizarMovimiento({y:0,x:+1,details,nombreFuncion:"moverDerecha"})
+  moverDerecha(details = { origin: "unknown" }) {
+    const ejecucion = this._realizarMovimiento({ y: 0, x: +1, details, nombreFuncion: "moverDerecha" })
     return ejecucion
   }
-  moverIzquierda(details={origin:"unknown"}){
-    const ejecucion = this._realizarMovimiento({y:0,x:-1,details,nombreFuncion:"moverIzquierda"})
+  moverIzquierda(details = { origin: "unknown" }) {
+    const ejecucion = this._realizarMovimiento({ y: 0, x: -1, details, nombreFuncion: "moverIzquierda" })
     return ejecucion
   }
-  moverAbajo(details={origin:"unknown"}){
-    const ejecucion = this._realizarMovimiento({y:+1,x:0,details,nombreFuncion:"moverAbajo"})
+  moverAbajo(details = { origin: "unknown" }) {
+    const ejecucion = this._realizarMovimiento({ y: +1, x: 0, details, nombreFuncion: "moverAbajo" })
     return ejecucion
   }
-  moverArriba(details={origin:"unknown"}){
-    const ejecucion = this._realizarMovimiento({y:-1,x:0,details,nombreFuncion:"moverArriba"})
+  moverArriba(details = { origin: "unknown" }) {
+    const ejecucion = this._realizarMovimiento({ y: -1, x: 0, details, nombreFuncion: "moverArriba" })
     return ejecucion
   }
 }
@@ -705,18 +868,18 @@ class PersonajeMovibleAbsoluto extends PersonajeMovible{
  * @class RobotStandard
  * @extends {PersonajeMovibleAbsoluto}
  */
-class RobotStandard extends PersonajeMovibleAbsoluto{
-  constructor(shortConfigObj, juego){
-    let x =     {
+class RobotStandard extends PersonajeMovibleAbsoluto {
+  constructor(shortConfigObj, juego) {
+    let x = {
       tipoPersonaje: "JUGABLE",
       yaCreadoEnHtml: false,
       elementoHTML: null,
       yaConImagenEnHtml: false,
       imagenenHTML: null,
       hasTooltips: true,
-      zindex:3,
+      zindex: 3,
     }
-    let merged = {...x, ...shortConfigObj}
+    let merged = { ...x, ...shortConfigObj }
     super(merged, juego);
   }
 }
@@ -727,22 +890,22 @@ class RobotStandard extends PersonajeMovibleAbsoluto{
  * @class Openable
  * @extends {Personaje}
  */
- class Openable extends Personaje{
-  constructor(persConfigObj, juego){
+class Openable extends Personaje {
+  constructor(persConfigObj, juego) {
     super(persConfigObj, juego);
   }
-  open(){
+  open() {
     this.setStatus("open");
   }
-  open_and_show_modal(){
+  open_and_show_modal() {
     this.open();
     this.juego.modalPannel.mostrar();
   }
-  open_and_end(){
+  open_and_end() {
     this.open_and_show_modal();
     this.juego.terminateAll()
   }
-  close(){
+  close() {
     this.setStatus("closed");
     this.juego.modalPannel.ocultar();
   }
@@ -755,8 +918,128 @@ class RobotStandard extends PersonajeMovibleAbsoluto{
  * @class PersonajeObjetoSimple
  * @extends {Personaje}
  */
-class PersonajeObjetoSimple extends Personaje{
-  constructor(persConfigObj, juego){
+class PersonajeObjetoSimple extends Personaje {
+  constructor(persConfigObj, juego) {
     super(persConfigObj, juego);
+  }
+}
+
+
+/* ---- MOVIMIENTOS RELATIVOS ---- */
+
+/**
+ * PersonajeMovibleRelativo.
+ *
+ * @class PersonajeMovibleRelativo
+ * @extends {PersonajeMovible}
+ */
+class PersonajeMovibleRelativo extends PersonajeMovible {
+  constructor(persConfigObj, juego) {
+    persConfigObj.direccion = 90;
+    super(persConfigObj, juego);
+  }
+  _apuntarEnDireccion(params){
+    if(!this.alive){return false}
+
+    this.direccion = params.direccion;
+    // console.log(args.direccion);
+
+    const log = {
+      personaje: this,
+      continua: true,
+      isVictory: false,
+      mensajeValidez: null,
+      mensajeColisionSelf: null,
+      mensajeColisionThird: null,
+      details: params.details,
+      nombreFuncion: params.nombreFuncion,
+      // hardArguments: params.hardArguments
+    }
+    // console.log(log)
+    if (this.juego.modo == "prerun") {
+      this.juego.log.push(log);
+    } else if (this.juego.showInterface) {
+      this.interfaz.rotarPersonaje(this.direccion); 
+      this.juego.showInterface.show(log)
+    }
+    return log;
+
+
+    // TEMA LOGGEO y ESO
+  }
+  girarIzquierda(details = { origin: "unknown" }){
+    if(!this.alive){return false}
+    let nuevaDireccion = this.direccion-90;
+    return this._apuntarEnDireccion({direccion: nuevaDireccion, details, nombreFuncion:"girarIzquierda"})
+  }
+  girarDerecha(details = { origin: "unknown" }){
+    if(!this.alive){return false}
+    let nuevaDireccion = this.direccion+90;
+    return this._apuntarEnDireccion({direccion: nuevaDireccion, details, nombreFuncion:"girarDerecha"})
+  }
+  girarGrados(details = {origin: "unknown" }){
+    if(!this.alive){return false}
+    let parametroRecibido = parseInt(details.arguments[0]);
+    let nuevaDireccion = this.direccion+parametroRecibido;
+    return this._apuntarEnDireccion({direccion: nuevaDireccion, details, nombreFuncion:"girarGrados"})
+  }
+  apuntarEnDireccion(details = { origin: "unknown" }){
+    if(!this.alive){return false}
+    const nuevaDireccion = parseInt(details.arguments[0])
+    return this._apuntarEnDireccion({direccion: nuevaDireccion, details, nombreFuncion:"apuntarEnDireccion"})
+  }
+
+  avanzar(details = { origin: "unknown" }){
+    let resto = this.direccion
+    if(this.direccion>=360){
+      resto = this.direccion%360;
+    }
+    // console.log(resto)
+    let ejecucion;
+    switch(resto){
+      case 0:
+        ejecucion = this._realizarMovimiento({ y: -1, x: 0, details, nombreFuncion: "avanzar" })
+        break;
+      case 90:
+      case -270:
+        ejecucion = this._realizarMovimiento({ y: 0, x: +1, details, nombreFuncion: "avanzar" })
+        break;
+      case 180:
+      case -180:
+        ejecucion = this._realizarMovimiento({ y: +1, x: 0, details, nombreFuncion: "avanzar" })
+        break;
+      case 270:
+      case -90:
+        ejecucion = this._realizarMovimiento({ y: 0, x: -1, details, nombreFuncion: "avanzar" })
+        break;
+      default:
+        ejecucion = null;
+        break;
+    }
+    return ejecucion
+  }
+
+} // fin clase
+
+
+/**
+ * RobotStandardRelativo.
+ *
+ * @class RobotStandardRelativo
+ * @extends {PersonajeMovibleRelativo}
+ */
+ class RobotStandardRelativo extends PersonajeMovibleRelativo {
+  constructor(shortConfigObj, juego) {
+    let x = {
+      tipoPersonaje: "JUGABLE",
+      yaCreadoEnHtml: false,
+      elementoHTML: null,
+      yaConImagenEnHtml: false,
+      imagenenHTML: null,
+      hasTooltips: true,
+      zindex: 3,
+    }
+    let merged = { ...x, ...shortConfigObj }
+    super(merged, juego);
   }
 }

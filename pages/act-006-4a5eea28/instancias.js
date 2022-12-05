@@ -4,7 +4,7 @@ https://www.digitalhouse.com/ar/productos/escuelas
 */
 
 document.getElementById("dhs-encabezado-lista2").innerHTML = "Instrucciones para Pedro";
-document.getElementById("dhs-encabezado-desafio").innerHTML = "El desafío de Pedro";
+document.getElementById("dhs-encabezado-desafio").innerHTML = "Pedro va a la Escuela";
 
 
 const miActividad = new DHS_Sortable_Game_Act_Absolute({
@@ -141,7 +141,7 @@ const otrosElementos = [
     ["0", "0", "0", "0", "0", "0", "0", "0", "0",],
     ["1", "0", "1", "1", "0", "1", "1", "0", "1",],
     ["E", "0", "E", "E", "0", "E", "E", "0", "E",],
-    ["E", "0", "E", "E", "0", "E", "E", "0", "E",],
+    ["F", "0", "F", "F", "0", "F", "F", "0", "F",],
     ["1", "0", "1", "1", "0", "A", "A", "P", "A",],
     ["1", "0", "1", "1", "0", "A", "A", "P", "A",],
     ["1", "0", "0", "0", "0", "P", "P", "P", "P",],
@@ -164,6 +164,23 @@ for(let i=0; i< otrosElementos.length; i++){
                             idUsarHTML: "auto-embotellado-"+i+"-"+j,
                             statuses:{
                                 normal:{name:"normal",imageUrl:miActividad.imagenes.autoEmbotellado.url}
+                            },
+                            currentStatus: "normal",
+                            hasTooltips: true,
+                            initial_x: j,
+                            initial_y: i, // Begins at 0
+                            zindex: 2,
+                        }
+                    );
+                    break;
+                case "F":
+                    miActividad.juego.agregarPersonaje(
+                        PersonajeObjetoSimple,
+                        {
+                            tipoPersonaje: "AUTO-EMBOTELLADO",
+                            idUsarHTML: "auto-embotellado-"+i+"-"+j,
+                            statuses:{
+                                normal:{name:"normal",imageUrl:miActividad.imagenes.autoEmbotelladoRight.url}
                             },
                             currentStatus: "normal",
                             hasTooltips: true,

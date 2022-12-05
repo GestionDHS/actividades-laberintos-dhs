@@ -4,7 +4,7 @@ https://www.digitalhouse.com/ar/productos/escuelas
 */
 
 document.getElementById("dhs-encabezado-lista2").innerHTML = "Instrucciones para Lupe";
-document.getElementById("dhs-encabezado-desafio").innerHTML = "El desafío de Lupe";
+document.getElementById("dhs-encabezado-desafio").innerHTML = "Lupe y el lodo";
 
 const miActividad = new DHS_Sortable_Game_Act_Absolute({
     idBotonEjecutar: "dhs-button",

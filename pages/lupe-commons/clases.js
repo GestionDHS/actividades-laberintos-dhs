@@ -25,8 +25,8 @@ class Lupe extends RobotStandard{
         if(cofre){
             cofre.abrir();
         } else {
-            this.terminate();
             this._decir(mensajeValidez);
+            this.terminate();
         }
         const log = {
             personaje: this,

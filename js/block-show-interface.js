@@ -35,7 +35,6 @@ class BlockShowInterface{
     }
     // OBLIGATORIO (polimorfismo)
     show(x){
-        console.log(x)
         let instruccionActual = x.details.instructionCount;
         let listaInstrucciones = document.getElementById("dhs-lista2");
         let itemsInstrucciones = listaInstrucciones.children;
