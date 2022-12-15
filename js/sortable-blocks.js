@@ -157,14 +157,16 @@ class Sortable_Blocks {
       blockListItem.setAttribute("data-id", params.clave);
       blockListItem.setAttribute("id", params.clave); //pia-------------
       blockListItem.setAttribute("class", params.clase); // pia---------
-      const icon = document.createElement("IMG");
-      icon.alt = params.nombreCompleto;
-      icon.src = params.rutaImagen;
+      if(params.rutaImagen){
+        const icon = document.createElement("IMG");
+        icon.alt = params.nombreCompleto;
+        icon.src = params.rutaImagen;
+        blockListItem.appendChild(icon);
+      }
       const caja = document.createElement("DIV");
       const txt = document.createElement("SPAN");
       txt.innerHTML = params.nombreCompleto;
       caja.appendChild(txt);
-      blockListItem.appendChild(icon);
       blockListItem.appendChild(caja);
       if (params.inputElements) {
         for (let inpt of params.inputElements) {

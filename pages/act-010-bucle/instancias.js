@@ -220,8 +220,8 @@ while(count < 10){
 miActividad.interface.agregarBloqueListaA({
     clave:"repeat",
     clase:"ordenRepeat",
-    rutaImagen: miActividad.imagenes.reciclar.url,
-    nombreCompleto: "Repeat",
+    //rutaImagen: miActividad.imagenes.reciclar.url,
+    nombreCompleto: "Repetir",
     sortableEmbedded: true,
     inputElements:[mySelect.cloneNode(true)]
 })

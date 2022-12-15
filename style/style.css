@@ -186,6 +186,16 @@ li.ordenRepeat > ul{
     cursor: grab;
     margin:2px 2px 2px 30px; 
   }
+#dhs-lista > li.ordenRepeat{
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 2fr;
+}
+li.ordenRepeat > div > span{
+  font-size:19px;
+  text-align: left;
+  margin-left: 5px;
+}
 li.ordenRepeat > div {
   display:grid;
   grid-template-columns: 2fr 1fr;
@@ -221,8 +231,10 @@ li.ordenRepeat > div {
   background-color: var(--verde_muy_claro) !important;
 }
 #dhs-lista2 > li.ordenRepeat{
-  /*background-color: red;*/
   width: 160px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 35px 2fr;
 }
 #dhs-lista2 > li.ordenRepeat > ul{
   width: 120px;
