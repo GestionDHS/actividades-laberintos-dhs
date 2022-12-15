@@ -112,8 +112,27 @@ class DHS_Sortable_Game_Act extends DHS_Game_Act {
       idListaErase: "dhs-erase",
       idBotonErase: "dhs-erase-button",
       editable: x.editable,
-      edicionHabilitable: x.edicionHabilitable
+      edicionHabilitable: x.edicionHabilitable,
+      nameGroup1:"sheared",//pia
+      nameGroupEmbedded:"bucle",//pia
+      idUlEmbedded: "ul-repeat",//pia
     })
+    // this.interfaceEmbedded = new Sortable_Blocks({ ---pia
+    //   idListaOrigen: "dhs-lista",
+    //   idListaDestino: "ul-repeat"
+    // })
+    /**Pia------------------------------------------------------------------ */
+    this.interfaceEmbedded = new OrdenRepeat("ul-repeat","ordensimple",{   
+      idListaOrigen: "dhs-lista",
+      idListaDestino: "dhs-lista2",
+      idListaErase: "dhs-erase",
+      idBotonErase: "dhs-erase-button",
+      editable: x.editable,
+      edicionHabilitable: x.edicionHabilitable,
+      nameGroup1:"sheared",//pia
+      nameGroupEmbedded:"bucle",//pia
+    })
+    /**Pia-fin----------------------------------------------------------------- */
   }
 }
 
@@ -307,6 +326,7 @@ class DHS_Sortable_Game_Act_Apuntar_Direccion extends DHS_Sortable_Game_Act {
         nombreCompleto: this.imagenes.avanzar.nombre,
         rutaImagen: this.imagenes.avanzar.url,
         clave: "avanzar",
+        clase:"ordenSimple",//pia
         inputElements: [inputPasos.cloneNode(true)],
       }
     );
@@ -315,9 +335,12 @@ class DHS_Sortable_Game_Act_Apuntar_Direccion extends DHS_Sortable_Game_Act {
         nombreCompleto: this.imagenes.apuntar.nombre,
         rutaImagen: this.imagenes.apuntar.url,
         clave: "apuntar",
+        clase:"ordenSimple",//pia
         inputElements: [inputDireccion.cloneNode(true)],
       }
     );
+
+    //instanciar acá el bloque repeat
   }
 }
 

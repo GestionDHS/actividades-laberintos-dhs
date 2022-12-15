@@ -138,8 +138,8 @@ https://www.digitalhouse.com/ar/productos/escuelas
 }
 
 /* BLOQUES */
-
-.dhs-lista-bloques li {
+/*.ordenSimple */
+.dhs-lista-bloques  li {
   list-style: none;
   border: 1px solid var(--gris_claro);
   background-color: var(--amarillo_fuerte);
@@ -169,7 +169,27 @@ https://www.digitalhouse.com/ar/productos/escuelas
   border-radius: 5px;
 }
 
-
+/***********- Pia - bloque Repeat -********************/
+/*tratar por clase*/
+li.ordenRepeat > ul{
+  /* #ul-repeat{ */
+    position:relative;
+    list-style: none;
+    background-color: var(--amarillo_claro);
+    border: 1px solid var(--gris_claro);
+    color: var(--blanco);
+    width: 120px;
+    height:50px;
+    text-align: center;
+    font-size: 15px;
+    border-radius: 5px;
+    cursor: grab;
+    margin:2px 2px 2px 30px; 
+  }
+li.ordenRepeat > div {
+  display:grid;
+  grid-template-columns: 2fr 1fr;
+}
 
 #dhs-lista2 li {
   margin: 0 auto;
@@ -200,6 +220,22 @@ https://www.digitalhouse.com/ar/productos/escuelas
 #dhs-wrapper-lista2 #dhs-lista2 li.dhs-running-block-correct select {
   background-color: var(--verde_muy_claro) !important;
 }
+#dhs-lista2 > li.ordenRepeat{
+  /*background-color: red;*/
+  width: 160px;
+}
+#dhs-lista2 > li.ordenRepeat > ul{
+  width: 120px;
+  height:auto;
+  padding: 2px 2px 15px 2px;
+}
+/* #ul-repeat > .ordenSimple{ */
+li.ordenRepeat > ul > li{
+  background-color: rgb(195, 146, 13);
+  width: 110px;
+  font-size: 12px;
+}
+/***********- Pia - bloque Repeat - fin********************/
 
 /* SORTABLE */
 
@@ -556,3 +592,5 @@ ul#lista-iconos li img {
     padding: 10px;
   }
 }
+
+
